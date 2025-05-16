@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .upload-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #uploaded-image {
+            margin-top: 20px;
+            max-width: 100%;
+            max-height: 300px;
+        }
+        .download-btn {
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Upload Image</h2>
+        <input type="file" id="image-input" accept="image/*">
+        <button id="upload-btn">Upload</button>
+        <div id="image-container"></div>
+        <a id="download-link" class="download-btn" href="#" download>
+            <button>Download Image</button>
+        </a>
+    </div>
+
+    <script>
+        const uploadBtn = document.getElementById('upload-btn');
+        const imageInput = document.getElementById('image-input');
+        const imageContainer = document.getElementById('image-container');
+        const downloadLink = document.getElementById('download-link');
+
+        uploadBtn.addEventListener('click', function () {
+            const file = imageInput.files[0];
+            if (file) {
+                const fileSize = file.size / 1024 / 1024; // Size in MB
+                if (fileSize > 1) {
+                    alert('File size exceeds 1MB. Please upload a smaller image.');
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.id = 'uploaded-image';
+                        img.src = e.target.result;
+                        imageContainer.innerHTML = '';
+                        imageContainer.appendChild(img);
+                        downloadLink.style.display = 'inline-block';
+                        downloadLink.href = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                alert('Please select an image to upload.');
+            }
+        });
+    </script>
+</body>
+</html>
